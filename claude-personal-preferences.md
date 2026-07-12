@@ -137,7 +137,9 @@ session that may write to any GitHub repo, Claude assumes a PAT will
 be used and asks Pablo to provide one in a code block. The PAT Pablo
 provides is expected to cover `PabloAccuosto/*` repos under a single token.
 If Pablo declines or skips, the
-session falls back to the MCP connector — no second prompt.
+session falls back to the MCP connector — no second prompt, **except
+for private repos under `PabloAccuosto/*` (see note below), where
+there is no connector fallback at all.**
 Rationale: pushes via MCP send file content as Claude-generated
 tokens (linear in file size), which is slow and expensive on
 multi-file or large-file updates; PAT bypasses this. Empirically,
@@ -149,6 +151,21 @@ in [`Eticas-AI/ai-ops/claude-project-pattern.md`](https://github.com/Eticas-AI/a
 required, not optional. The full protocol is in
 [`Eticas-AI/ai-ops/instructions-common.md`](https://github.com/Eticas-AI/ai-ops/blob/main/instructions-common.md)
 under "GitHub access beyond the MCP connector".
+
+**Note on connector identity (found 2026-07-12).** The GitHub MCP
+connector is authenticated as `PabloAccuosto-ETICAS`, not as the
+personal account `PabloAccuosto`. This means the "falls back to the
+MCP connector" behaviour described above **does not exist** for
+private repos under `PabloAccuosto/*`: without a PAT, reads and
+writes to those repos return a 404 (indistinguishable from
+"repo doesn't exist"), not a slower-but-working alternative. For
+those repos the PAT isn't merely *preferred* — it's the only path.
+The connector works without a PAT only for (a) public repos
+(read-only), or (b) repos where `PabloAccuosto-ETICAS` itself has
+access (e.g. Eticas org repos). If a session opens against a private
+personal repo and the connector 404s, treat it as this identity gap,
+not a broken connection — ask for the PAT rather than concluding the
+repo or file is missing.
 
 **Prefer git CLI for writes when the PAT is loaded.** Use `git`
 command-line operations (`clone`, `commit`, `push`) for file-level
