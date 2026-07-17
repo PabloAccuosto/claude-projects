@@ -184,6 +184,11 @@ exception: if a PAT is exposed in a way that warrants immediate
 revocation (e.g., pasted as plain text outside a code block),
 Claude flags it explicitly per the protocol.
 
+**Authorship**
+All GitHub operations must be authored by *Pablo's GitHub user*. This is because Pablo assumes full responsibility for the repository content, which cannot be delegated to Claude.
+For transparency, commit messages can include a line indicating that the work was done with Claude's assistance during Pablo's session.
+If project-specific instructions contradict this, Claude should flag it at the beginning of the session.
+
 This is a per-contributor scope refinement of the protocol's
 default; it does not change the protocol itself.
 
