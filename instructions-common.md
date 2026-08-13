@@ -18,15 +18,18 @@ The locations below have clear roles. If the same content appears in
 more than one location, the canonical location wins.
 
 - **Project repo** — single source of truth for state, code, and
-  project-specific synthesis. Reached through GitHub MCP only, never
-  through the project knowledge GitHub sync feature.
+  project-specific synthesis. Never reached through the project
+  knowledge GitHub sync feature. The access path — connector or PAT —
+  is chosen per § "GitHub access: connector and PAT" below, and for
+  private repos under Pablo's personal account the PAT is the only
+  path that works at all.
 - **Project knowledge** — counterparty artefacts not appropriate for
   version control (signed contracts, NDAs, architecture PDFs,
   reference documents, email correspondence).
 - **Reference repos** — if a project depends on other repos Pablo
   maintains (a shared template, a personal knowledge base), the
   project's instructions declare them explicitly and Claude reads
-  them via MCP at the moment they're needed.
+  them at the moment they're needed.
 - **Project-declared additional sources** — some projects depend on
   systems beyond the two above (SharePoint, Google Drive, a
   third-party issue tracker). When this applies, the project's
@@ -38,6 +41,16 @@ more than one location, the canonical location wins.
 If you find content in project knowledge that contradicts the
 canonical repo, the repo wins — flag the contradiction so Pablo can
 clean it up.
+
+**Read these files from the repo, not from the rendered web page.**
+Fetching `github.com/<owner>/<repo>/blob/<branch>/<file>` returns the
+HTML view, which can be served from cache and silently lag behind
+`main`. Observed 2026-08-13: the blob view returned a
+`claude-personal-preferences.md` that was 22 lines short of the file
+on `main`, omitting two whole sections — no error, plausible content,
+wrong version. Prefer a clone (or the raw/API path) whenever the
+content is going to be acted on, and treat a line count that
+disagrees with the file as the tell.
 
 ## Workflow
 
@@ -337,8 +350,9 @@ fall back to MCP for operations that need the PAT.
 
 ## What does not belong in project knowledge
 
-- The project repo, indexed via the GitHub sync feature. MCP only.
-- Reference content from other repos. Read those via MCP.
+- The project repo, indexed via the GitHub sync feature. Read it live
+  instead.
+- Reference content from other repos. Read those live too.
 - Material from other projects.
 
 ## Drift between project instructions and this file

@@ -31,15 +31,17 @@ always at least one entry-point file at a known path.
 **2. Source-of-truth hierarchy.** Three locations, with clear roles:
 
 - **Project repo** — single source of truth for state, code, and
-  project-specific synthesis. Accessed via GitHub MCP only, never via
-  project knowledge GitHub sync.
+  project-specific synthesis. Never reached through the project
+  knowledge GitHub sync (invariant 5). *Which* access path is used to
+  reach it — the MCP connector, or `git`/REST with a session PAT — is
+  an operational choice, not an invariant: see §9.
 - **Project knowledge** — artefacts that don't belong in version
   control (signed contracts, NDAs, architecture PDFs, large reference
   documents, email correspondence).
 - **Other reference repos** — when a project depends on material you
   maintain elsewhere (a shared template, a personal knowledge base,
   a taxonomy), the canonical source is always the dedicated repo,
-  read via MCP at the moment it is needed.
+  read live at the moment it is needed.
 
 If the same content appears in more than one location, the canonical
 location wins. Contradictions are flagged for cleanup.
@@ -58,10 +60,11 @@ does not commit autonomously.
   permits (currently: yes, for routine state-file updates; branch
   for repo structure, project instructions, or this pattern itself).
 
-**5. MCP access only.** The project repo is reached through GitHub
-MCP. The "Add content from GitHub" sync into project knowledge is
-not used — it creates a parallel access path that drifts silently
-from the repo.
+**5. No GitHub sync into project knowledge.** The "Add content from
+GitHub" feature is not used — it creates a parallel access path that
+drifts silently from the repo. This invariant governs the *sync*, not
+which tool reaches the repo: the connector and the PAT path are both
+legitimate ways in, and §9 decides between them.
 
 These five points are non-negotiable. Everything else in this
 document — file names, folder structures, which auxiliary files a
@@ -173,8 +176,9 @@ documents the project receives from outside.
 
 What does not belong in project knowledge:
 
-- The project repo, indexed via the GitHub sync feature. Use MCP only.
-- Reference content from other repos you maintain. Read those via MCP.
+- The project repo, indexed via the GitHub sync feature. Read it live
+  instead, by whichever path §9 indicates.
+- Reference content from other repos you maintain. Read those live too.
 - Material from other projects that has crept in.
 
 For projects with no counterparty (personal tooling, exploratory
@@ -273,7 +277,7 @@ When setting up or migrating a project:
    file in project knowledge and in the repo: belongs here, belongs
    elsewhere, duplicate, stale, unclear (ask).
 2. **Disconnect any GitHub sync** between the project knowledge and
-   the repo. Use MCP only.
+   the repo. Read the repo live instead (§9).
 3. **Set up the repo skeleton.** At minimum, a root `README.md`
    pointing to wherever the entry point is. Add `meta/` if the
    project benefits from any of the components in §2. Add `data/`
@@ -300,27 +304,39 @@ proposed as an update here and applied across active personal
 projects when relevant. When a refinement does not generalise, it is
 documented as a local exception in the project's `meta/README.md`.
 
-## 9. GitHub access beyond the MCP connector
+## 9. GitHub access: the connector and the PAT
 
-The MCP connector is the primary path for repo work and should
-remain so — it is the lowest-friction, lowest-secret-exposure way to
-interact with GitHub. But it is not capability-complete. The hosted
-GitHub MCP server intentionally does not expose write operations on
-tags, GitHub Releases, or `.github/workflows/` files, and is
-one-call-per-file in a way that makes bulk operations impractical.
+Two paths reach a repo from a session: the hosted **MCP connector**,
+and a session-scoped **PAT** used via `git`/`gh`/REST API in `bash`.
+Neither is an invariant of this pattern and neither is primary by
+fiat. Which one to use depends on the operation, on the account the
+repo lives under, and on the standing default in the personal
+preferences file.
 
-The pattern accommodates this with a session-scoped PAT protocol:
-when an operation requires capabilities the connector does not have,
-Pablo pastes a fine-grained PAT into the chat inside a code block,
-Claude uses it via `git`/`gh`/REST API in `bash` for the duration of
-that session, and the token is never written to any file or surface
-that persists beyond the chat.
+**The connector is not capability-complete.** The hosted GitHub MCP
+server intentionally does not expose write operations on tags, GitHub
+Releases, or `.github/workflows/` files, and is one-call-per-file in a
+way that makes bulk operations impractical. It also becomes unreliable
+beyond roughly 30 KB of payload — see §3.
 
-The default behaviour at session start, the security boundaries, and
-recommended PAT scopes live in
+**For some repos the connector is not a slower alternative but no
+alternative at all.** The connector authenticates as its own identity,
+which is not necessarily the identity that owns the repo. Where it
+lacks access, reads and writes return 404 — indistinguishable from
+"the repo or file does not exist". A session that opens against a
+private repo and gets a 404 should treat it as a possible identity gap
+and ask for a PAT, rather than concluding the repo, the path, or the
+file is wrong. Where this applies, the PAT is not *preferred*, it is
+the only path. The current per-account specifics live in the personal
+preferences file; the structural point — that an access path can be
+absent rather than merely degraded, and that its absence is disguised
+as a missing file — belongs here.
+
+**The PAT protocol.** Pablo pastes a fine-grained PAT into the chat
+inside a code block; Claude uses it for the duration of that session;
+the token is never written to any file or surface that persists beyond
+the chat. The default behaviour at session start, the security
+boundaries, and recommended PAT scopes live in
 [`instructions-common.md`](https://github.com/PabloAccuosto/claude-projects/blob/main/instructions-common.md)
 under "GitHub access: connector and PAT". The personal preferences
-file can override the default behaviour.
-
-The PAT path is for the gaps. It does not replace the connector; it
-extends it.
+file sets the standing default and can override it.
