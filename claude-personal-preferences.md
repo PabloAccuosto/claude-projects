@@ -22,6 +22,20 @@ instructions, or the canonical pattern in `ai-ops`.
 
 When in doubt about whether a change is "routine", branch.
 
+**Measure before designing.** When a decision depends on the size of a
+population — how many rows a rule would touch, how many cases a
+distinction would separate — count it before designing around it. The
+count is almost always shorter than the discussion, and a small enough
+number dissolves the decision instead of resolving it.
+
+This is recorded because the failure recurred on consecutive days:
+elaborate handling built for a population that turned out to be 0.38% of
+the data, and a three-way taxonomy of human abstentions built before
+anyone had counted the 42 rows it applied to (1.8%, and the answer was to
+leave them out of the denominator). Both times Pablo stopped it with the
+same sentence. The trigger to watch for is Claude proposing structure — a
+taxonomy, a flag, a pipeline step — for a population it has not measured.
+
 ## Session start: confirm the goal before starting work
 
 **Orient first, then confirm the session's focus with Pablo before
