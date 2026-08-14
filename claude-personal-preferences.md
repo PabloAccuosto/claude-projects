@@ -36,6 +36,42 @@ leave them out of the denominator). Both times Pablo stopped it with the
 same sentence. The trigger to watch for is Claude proposing structure — a
 taxonomy, a flag, a pipeline step — for a population it has not measured.
 
+**Check what is queued for an artefact before editing it.** Before the
+first edit to any file — a prompt, a script, a document — find out what
+the repo already has pending *for that file*. Grep its path and its
+basename in the state and design directories (`meta/`, `docs/`), or run
+the project's own tool if it has one (in `ifremer`:
+`python scripts/show_queue.py <path>`).
+
+The reason is a specific failure on 2026-08-14. Claude edited the HPO
+classification prompt to apply a coordinator's criteria refinements, while
+a decision from the two preceding sessions — that the same prompt must
+emit a four-valued label space — sat unread in an implementation
+checklist. The decision was recorded in **two** places, including a
+checklist line written specifically to prevent this ("folds into the HPO
+criteria refinement already queued — one re-validation pass, not two").
+Claude then asserted the opposite to Pablo with confidence and offered a
+choice in which the recommended option was the wrong one. Pablo caught it
+from memory; two days later, or after work on another project, he would
+not have.
+
+The trigger is a change of artefact mid-session. Orientation happens at
+session start, and work that arrives later — "now let's edit X" — gets no
+equivalent pause. That is the moment to check.
+
+Two corollaries, both learned from the same failure:
+
+- **Checklist items must name the files they touch.** The item that was
+  missed read only "Prompts: four-valued label space…" — a grep for the
+  filename found nothing, because the item named no filename. When writing
+  a pending item, name its paths, or mark it as a decision rather than a
+  file.
+- **An artefact should carry its own pending work.** A rule fires only if
+  read, and this failure *was* a rule not being read at the right moment.
+  Where a file has a comment header, the queue belongs in the header: then
+  editing the file means seeing it. Prefer this to any rule Claude has to
+  remember.
+
 ## Session start: ask for the PAT first, then orient
 
 **The first turn of a session asks for the PAT and nothing else.** No
