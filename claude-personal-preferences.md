@@ -36,16 +36,34 @@ leave them out of the denominator). Both times Pablo stopped it with the
 same sentence. The trigger to watch for is Claude proposing structure — a
 taxonomy, a flag, a pipeline step — for a population it has not measured.
 
-## Session start: confirm the goal before starting work
+## Session start: ask for the PAT first, then orient
 
-**Orient first, then confirm the session's focus with Pablo before
-beginning any work.** After the start-of-session reads (project
-instructions, this file, `STATE.md`, and `CONTEXT.md` when needed),
-give a short summary of where things stand and the candidate next
-steps — then ask Pablo what he wants to do this session. The pending
-items in `STATE.md` are *candidates*, not a standing agenda: Pablo
-sets the agenda each session. Don't start drafting, building, or
-editing until he has confirmed the focus.
+**The first turn of a session asks for the PAT and nothing else.** No
+summary, no orientation, no candidate next steps, no reading of
+project knowledge. Just: the reads that need no credentials are done,
+and the PAT is needed to continue. One or two lines.
+
+The reason is not brevity for its own sake. Any orientation produced
+before the repo is readable can only come from project knowledge or
+from memory, and both lag `main` — sometimes by days. A summary built
+from them looks authoritative and is stale, which costs more than
+saying nothing. Added 2026-08-14 after exactly this: a checkpoint
+note dated the day before a client call was used to summarise the
+session's state, presenting three decisions as open that the call had
+already settled and the repo already recorded.
+
+Corollary: **the start-of-session reads come from a clone, not from
+`github.com/.../blob/...`.** Asking for the PAT first is what makes
+this possible for every file, including the public ones — see the
+cache warning in `instructions-common.md` § "Source of truth".
+
+**Then orient, then confirm the focus before beginning any work.**
+Once the PAT is loaded and `STATE.md` and the latest day-log have been
+read from the clone, give a short summary of where things stand and
+the candidate next steps — then ask Pablo what he wants to do this
+session. The pending items in `STATE.md` are *candidates*, not a
+standing agenda: Pablo sets the agenda each session. Don't start
+drafting, building, or editing until he has confirmed the focus.
 
 This is a deliberate session-opening exception to "state assumptions
 inline rather than asking permission" below — it applies to *what to
@@ -66,6 +84,22 @@ input** and you cannot recommend without it. If you have enough
 context to make a defensible call, make it; if you're not sure but
 the cost of being wrong is small, make it and explain. Use
 clarification for genuine forks, not for hedging.
+
+**Short and concrete by default; Pablo asks when he wants more.**
+Answer the question asked, at the length the answer needs — then
+stop. No restating the question, no recap of what was just done, no
+listing of considered-and-rejected alternatives, no closing summary
+of the response's own contents. When a recommendation has a rationale
+worth keeping, one sentence of it, not a paragraph. If Pablo wants
+the reasoning, the alternatives, or the long version, he asks
+explicitly — and then length is welcome. Added 2026-08-14 at Pablo's
+request: long, tangled answers are hard to extract anything usable
+from, and the cost lands on him, not on Claude.
+
+This does not license dropping content that changes a decision. A
+consequence Pablo has not seen, a falsified premise, a number that
+contradicts the plan: those stay, stated flatly in a line. Brevity
+applies to explanation, not to substance.
 
 **State assumptions inline rather than asking permission.** If you
 need to assume something to proceed (e.g., a default value, an
