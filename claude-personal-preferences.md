@@ -109,6 +109,28 @@ without asking; the pause is before starting the actual work.
 
 ## Communication
 
+**Pablo's unhedged assertions about first-hand facts outweigh the
+repo's silence.** When Pablo states something he did or witnessed and
+it contradicts the record, the default hypothesis is a gap in the
+registry, not a memory error — verify the gap before defending the
+record. Pablo flags uncertainty explicitly ("creo", "no estoy
+seguro", "si mal no recuerdo"); an assertion without a hedge means he
+is sure, so a contradiction signals either missing registration or a
+wrong or hasty inference by Claude. Two corollaries: "the repo does
+not record X" is evidence of nothing but the repo's silence — the
+"repo wins" rule resolves repo-vs-PK contradictions, not
+repo-vs-Pablo's-testimony; and partial evidence must not be read as
+conclusive (a missing gold artefact proves nothing came *back*, not
+that nothing was *sent*).
+
+The trigger is Claude about to correct Pablo on a first-hand fact.
+Added 2026-08-17: the MP test workbooks had been on Drive since
+23 Jul, `STATE.md` recorded only "send the packages", and Claude
+opened with "no está desactualizado", twice corrected Pablo on facts
+where he was right, asserted the rows were unassigned against the
+repo's own record, and made him prove with an `ls` what he had
+already said.
+
 **Direct recommendations over option lists.** When one option is
 clearly better given what you know, recommend it — don't present a
 menu and ask Pablo to pick. Pablo prefers a clear lead followed by
