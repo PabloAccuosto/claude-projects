@@ -52,6 +52,43 @@ wrong version. Prefer a clone (or the raw/API path) whenever the
 content is going to be acted on, and treat a line count that
 disagrees with the file as the tell.
 
+## Claims Claude makes, and the check that precedes each
+
+Each rule names a check, not a virtue. All five failure modes were
+observed repeatedly in one session (ifremer, `meta/log/2026-09-21.md`),
+none was caught by reading, and each was caught by running something
+or by Pablo asking for a second look.
+
+- **A number in the record carries its provenance.** Before a figure
+  goes into a state file, a day-log, a design document, a PR body or
+  a commit message, it is stated as one of three things: *measured*
+  (name the artefact it is read from), *projected* (from what, by
+  what rule) or *chosen* (by whom, why). A projection or a choice
+  never appears in the form of a measurement, and a figure inherited
+  from one context is not a measurement in another.
+
+- **A claim about an artefact requires opening the artefact.** A
+  docstring, a usage line, a summary or a PR body is a claim about a
+  file, not the file. Before asserting what a file contains, what a
+  run recorded or which input a script read, open it. Reasoning
+  backwards from documentation to the artefact is how a stale line
+  becomes a confident wrong claim.
+
+- **A rule lives in one place; call it, do not restate it.** If a
+  check already exists as a function, import it. Re-stating it in a
+  shell script, a second script or a second reader produces guards
+  that drift from the rule they copy — and drifted guards refuse
+  correct configurations, which teaches people to bypass them.
+
+- **Anything that will spend money or hours is run before it is
+  handed over.** End to end, against a stubbed backend and a fixture
+  shaped like the real data, including the real data's gaps (a
+  missing column, a malformed row). Reading it is not testing it.
+
+- **"Pushed to PR #N" is said after checking the PR's state, not
+  before.** A branch whose PR merged mid-session accepts pushes that
+  reach nothing.
+
 ## Workflow
 
 **Commits to state files** (`STATE.md`, anything in `meta/`) use the
