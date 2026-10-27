@@ -72,12 +72,15 @@ Two corollaries, both learned from the same failure:
   editing the file means seeing it. Prefer this to any rule Claude has to
   remember.
 
-## Session start: ask for the PAT first, then orient
+## Session start: get repo access first, then orient
 
-**The first turn of a session asks for the PAT and nothing else.** No
-summary, no orientation, no candidate next steps, no reading of
-project knowledge. Just: the reads that need no credentials are done,
-and the PAT is needed to continue. One or two lines.
+**The first turn of a session gets repo access and nothing else.** If
+the project's instructions say to add the repo to the session and the
+session can do so, Claude attaches it in the first turn without asking.
+Otherwise the first turn asks for the PAT and nothing else. Either way:
+no summary, no orientation, no candidate next steps, no reading of
+project knowledge before the repo is readable. If a PAT is needed, the
+request is one or two lines.
 
 The reason is not brevity for its own sake. Any orientation produced
 before the repo is readable can only come from project knowledge or
@@ -89,12 +92,12 @@ session's state, presenting three decisions as open that the call had
 already settled and the repo already recorded.
 
 Corollary: **the start-of-session reads come from a clone, not from
-`github.com/.../blob/...`.** Asking for the PAT first is what makes
+`github.com/.../blob/...`.** Getting repo access first is what makes
 this possible for every file, including the public ones — see the
 cache warning in `instructions-common.md` § "Source of truth".
 
 **Then orient, then confirm the focus before beginning any work.**
-Once the PAT is loaded and `STATE.md` and the latest day-log have been
+Once repo access is in place and `STATE.md` and the latest day-log have been
 read from the clone, give a short summary of where things stand and
 the candidate next steps — then ask Pablo what he wants to do this
 session. The pending items in `STATE.md` are *candidates*, not a
@@ -236,10 +239,22 @@ compiling, importing, linting, offline logic, URL/shape resolution
 that needs no secret. Anything that needs a real key is handed to
 Pablo to run locally; Pablo brings back the output to iterate on.
 
-## GitHub access (PAT)
+## GitHub access (attached repo or PAT)
+
+**First choice: attach the repo to the session, where the project says
+so.** Sessions that can add repositories (the `add_repo` tool) reach
+private `PabloAccuosto/*` repos with Pablo's own credentials, so no PAT
+is needed for reads or pushes. When a project's instructions say "adding
+the repo to the session - otherwise use the PAT", Claude attaches the
+repo at session start without asking. The wording matters: on
+2026-10-27 the session's permission check blocked an attach in
+`norway-nva`, whose instructions made attaching conditional ("if
+possible") and also said the first turn asks for the PAT; the same
+attach went through in `ifremer`, whose instructions state it plainly.
+The PAT rules below apply when attaching is not available or fails.
 
 **Behaviour: `PAT-preferred` for all repos.** At the start of every
-session that may write to any GitHub repo, Claude assumes a PAT will
+session that may write to any GitHub repo and cannot attach it, Claude assumes a PAT will
 be used and asks Pablo to provide one in a code block. The PAT Pablo
 provides is expected to cover `PabloAccuosto/*` repos under a single token.
 If Pablo declines or skips, the
@@ -273,7 +288,8 @@ personal repo and the connector 404s, treat it as this identity gap,
 not a broken connection — ask for the PAT rather than concluding the
 repo or file is missing.
 
-**Prefer git CLI for writes when the PAT is loaded.** Use `git`
+**Prefer git CLI for writes when the repo is attached or the PAT is
+loaded.** Use `git`
 command-line operations (`clone`, `commit`, `push`) for file-level
 writes, and the GitHub REST API (via `curl` or equivalent) for
 repo-level operations git can't do — opening PRs, merging PRs,
