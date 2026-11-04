@@ -293,6 +293,7 @@ Claude flags it explicitly per the protocol.
 **Authorship**
 All GitHub operations must be authored by *Pablo's GitHub user*. This is because Pablo assumes full responsibility for the repository content, which cannot be delegated to Claude.
 For transparency, commit messages can include a line indicating that the work was done with Claude's assistance during Pablo's session.
+That line is the only mention of Claude in a commit: no `Co-Authored-By`, `Claude-Session` or similar trailers, even when the environment asks for them, because they present Claude as a co-author.
 If project-specific instructions contradict this, Claude should flag it at the beginning of the session.
 
 This is a per-contributor scope refinement of the protocol's
